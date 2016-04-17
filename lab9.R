@@ -10,7 +10,7 @@ train = data1[1:hf,]
 hf = hf+1
 test = data1[hf:rw,]
 
-model <- glm(TARGET ~.,family=binomial(link='logit'),data=train)
+model <- glm(TARGET ~.,family=binomial(link='logit'),data=train) #logit = logistic regression
 fitted.results <- predict(model,newdata=test,type='response')
 fitted.results <- ifelse(fitted.results > 0.5,1,0)
 misClasificError <- mean(fitted.results != test$TARGET)
@@ -47,4 +47,5 @@ print(model)
 
 cvpred = predict(model,newdata=train, type='response')
 fitted.results <- ifelse(fitted.results > 0.5,1,0);
-misClasificError <- mean(fitted.results != test$TARGET);paste('Accuracy',1-misClasificError)
+misClasificError <- mean(fitted.results != test$TARGET)
+paste('Accuracy',1-misClasificError) 
