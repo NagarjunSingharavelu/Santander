@@ -27,13 +27,20 @@ plot(g)
 
 #####2###
 install.packages("cvTools")
-mm=cvFit(model,data=train,y=fitted.results,K=5)
 
-print(mm)
+## k-fold validation with k=5 , alternate method
+#mm=cvFit(model,data=train,y=fitted.results,K=5)
+
+#print(mm)
+
+## k-fold validation with k=5
+
+## for more details - http://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
 install.packages("caret")
 
-train_control = trainControl(method="cv",number=5)
+train_control = trainControl(method="cv",number=5) # cv= cross validation , number = k = 5
 grid = expand.grid(.fL=c(0), .usekernel=c(FALSE))
+
 model = train(TARGET~.,data=data1,trControl=train_control,method="nb",tuneGrid=grid)
 
 print(model)
