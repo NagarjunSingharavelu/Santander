@@ -19,15 +19,16 @@ fitted.results <- ifelse(fitted.results > 0.5,1,0)
 misClasificError <- mean(fitted.results != test$TARGET)
 paste('Accuracy',(1-misClasificError)*100)
 
+
+#To find the Area Under Curve
 install.packages("ROCR")
 library("ROCR")
-
-pr <- prediction(fitted.results, test$TARGET)
-prf <- performance(pr, measure = "tpr", x.measure = "fpr")
-plot(prf)
-auc <- performance(pr, measure = "auc")
-auc <- auc@y.values[[1]]
-auc
+predValue <- prediction(fitted.results, test$TARGET)
+perfValue <- performance(predValue, measure = "tpr", x.measure = "fpr")
+plot(perfValue)
+aucValue <- performance(predValue, measure = "auc")
+aucValue <- aucValue@y.values[[1]]
+aucValue
 
 
 g = roc(TARGET~fitted.results,data=test)
