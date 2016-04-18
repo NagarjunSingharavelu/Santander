@@ -66,10 +66,13 @@ install.packages("caret")
 library("caret")
 
 # number=5 in the below comment represents the k value
-train_control = trainControl(method="cv",number=5)
-new.model = train(TARGET~.,data=firstHalfDS,trControl=train_control,method="glm")
+train.control <- trainControl(method = "repeatedcv", number = 5, savePredictions = TRUE)
 
-cvpred = predict(new.model,newdata=secondHalfDS)
-cvpred <- ifelse(cvpred > 0.5,1,0);
-new.misClasificError <- mean(cvpred != secondHalfDS$TARGET)
-print(paste('5-fold-Accuracy',1-new.misClasificError) )
+mod_fit <- train(TARGET~.,  data=firstHalfDS, method="glm", family="binomial", trControl = train.control, tuneLength = 5)
+
+pred = predict(mod_fit, newdata=secondHalfDS)
+pred <- ifelse(pred > 0.5,1,0);
+new.misClasificError <- mean(pred != secondHalfDS$TARGET)
+print(paste('5-fold-Accuracy',1-new.misClasificError))
+
+confusionMatrix(data=pred, secondHalfDS$TARGET)
