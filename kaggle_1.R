@@ -60,3 +60,16 @@ plot(rocPlotDataTrain)
 ##library(pscl)
 ##pR2(model)
 #----------------------------------------------------------------------------------
+
+################ To find k - fold cross validation ################
+install.packages("caret")
+library("caret")
+
+# number=5 in the below comment represents the k value
+train_control = trainControl(method="cv",number=5)
+new.model = train(TARGET~.,data=firstHalfDS,trControl=train_control,method="glm")
+
+cvpred = predict(new.model,newdata=secondHalfDS)
+cvpred <- ifelse(cvpred > 0.5,1,0);
+new.misClasificError <- mean(cvpred != secondHalfDS$TARGET)
+print(paste('5-fold-Accuracy',1-new.misClasificError) )
