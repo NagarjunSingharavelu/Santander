@@ -37,6 +37,8 @@ fitted.results <- ifelse(fitted.results > 0.5,1,0)
 misClasificError <- mean(fitted.results != secondHalfDS$TARGET)
 print(paste('Accuracy in % : ',(1-misClasificError)*100))
 
+confusionMatrix(data=fitted.results, secondHalfDS$TARGET)
+
 #To find the Area Under Curve------------------------------------------------------
 predValue <- predict(model, newdata=subset(secondHalfDS,select=c(1:25)), type="response")
 compValue <- prediction(predValue, secondHalfDS$TARGET)
