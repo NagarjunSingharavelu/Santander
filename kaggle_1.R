@@ -46,6 +46,14 @@ aucValue <- performance(compValue, measure = "auc")
 aucValue <- aucValue@y.values[[1]]
 aucValue
 
+#To find the ROC - ROC for Test Data
+rocPlotDataTest = roc(TARGET~fitted.results,data=secondHalfDS)
+plot(rocPlotDataTest)
+
+#To find the ROC - ROC for Train Data
+predRocValue = predict(model,newdata = firstHalfDS , type='response')
+rocPlotDataTrain = roc(TARGET~predRocValue,data=firstHalfDS)
+plot(rocPlotDataTrain)
 
 #For Future reference--------------------------------------------------------------
 ##install.packages('pscl')
