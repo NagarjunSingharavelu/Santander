@@ -1,5 +1,6 @@
 library(pROC)
 library(cvTools)
+library("caret")
 
 train = read.csv("/Users/Sundu/Desktop/R/Work/train.csv")
 test = read.csv("/Users/Sundu/Desktop/R/Work/train.csv")
@@ -27,7 +28,7 @@ plot(g)
 
 
 #####2###
-install.packages("cvTools")
+
 
 ## k-fold validation with k=5 , alternate method
 #mm=cvFit(model,data=train,y=fitted.results,K=5)
@@ -37,16 +38,16 @@ install.packages("cvTools")
 ## k-fold validation with k=5
 
 ## for more details - http://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
-install.packages("caret")
+
 
 train_control = trainControl(method="cv",number=5) # cv= cross validation , number = k = 5
-grid = expand.grid(.fL=c(0), .usekernel=c(FALSE))
+#grid = expand.grid(.fL=c(0), .usekernel=c(FALSE))
 
-model = train(TARGET~.,data=data1,trControl=train_control,method="nb",tuneGrid=grid)
+model = train(TARGET~.,data=data1,trControl=train_control,method="glm")
 
-print(model)
+#print(model)
 
-cvpred = predict(model,newdata=train, type='response')
+cvpred = predict(model,newdata=train)
 fitted.results <- ifelse(fitted.results > 0.5,1,0);
 misClasificError <- mean(fitted.results != test$TARGET)
 print(paste('5-fold-Accuracy',1-misClasificError) )

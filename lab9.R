@@ -1,6 +1,9 @@
+
+install.packages("pROC")
+install.packages("cvTools")
 library(pROC)
 library(cvTools)
-data1 = read.csv("/Users/Sundu/Desktop/R/Work/train.csv")
+data1 = read.csv("https://web.njit.edu/~ts336/train.csv")
 
 
 rw = nrow(data1)
@@ -14,7 +17,18 @@ model <- glm(TARGET ~.,family=binomial(link='logit'),data=train) #logit = logist
 fitted.results <- predict(model,newdata=test,type='response')
 fitted.results <- ifelse(fitted.results > 0.5,1,0)
 misClasificError <- mean(fitted.results != test$TARGET)
-paste('Accuracy',1-misClasificError)
+paste('Accuracy',(1-misClasificError)*100)
+
+install.packages("ROCR")
+library("ROCR")
+
+pr <- prediction(fitted.results, test$TARGET)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+plot(prf)
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
 
 g = roc(TARGET~fitted.results,data=test)
 plot(g)
