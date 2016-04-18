@@ -76,3 +76,18 @@ new.misClasificError <- mean(pred != secondHalfDS$TARGET)
 print(paste('5-fold-Accuracy',1-new.misClasificError))
 
 confusionMatrix(data=pred, secondHalfDS$TARGET)
+
+################ To find TARGET for Submission_Test in Kaggle ################
+
+testData=read.csv("https://web.njit.edu/~ts336/test.csv")
+filterTestData <- subset(testData,select=c('ID','var3','var15','imp_op_var39_comer_ult3', 'imp_op_var40_ult1', 'ind_var1_0', 'ind_var8', 'ind_var26_0', 'ind_var30_0', 'ind_var30', 'ind_var40_0', 'num_var1_0','num_var5', 'num_var42', 'saldo_var1', 'saldo_var5', 'var36', 'delta_imp_reemb_var17_1y3','ind_var43_recib_ult1', 'num_ent_var16_ult1', 'num_meses_var5_ult3', 'num_meses_var8_ult3','num_meses_var39_vig_ult3', 'num_reemb_var17_ult1', 'num_var43_recib_ult1', 'var38'))
+fitted.test <- predict(model,newdata=subset(filterTestData,select=c(2:26)),type='response')
+fitted.test <- ifelse(fitted.test > 0.5,1,0)
+tar=rep(0,nrow(filterTestData))
+ll=as.numeric(names(fitted.test[fitted.test==1]))
+for(i in 1:length(ll))
+{
+  tar[ll[i]]=1;
+}
+outVal=data.frame(ID=filterTestData$ID,TARGET=tar)
+write.csv(outVal,"Submission.csv")
