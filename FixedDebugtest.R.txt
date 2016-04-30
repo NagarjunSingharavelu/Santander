@@ -1,0 +1,66 @@
+f<-function(x) {
+	if(x %% 2 == 0) {
+		r<-5*x
+	} else {
+		r<--5*x
+	}
+}
+
+g<-function(x) {
+	r<-x^3
+}
+
+h<-function(x) {
+	r<-log(1+abs(x))
+}
+
+zsum<-0
+i<-0
+maxiter<-100
+while(i<maxiter) {
+	#browser()
+	if(i<10) {
+		#browser()
+		z<-f(i)
+
+		# If z>10, add z;
+		# If z>-10, add z^2;
+		# Otherwise, do not add anything.
+
+		if(z > 10) {
+			#browser()
+			zsum<-zsum+z
+			#i<-i+1
+		} else if(z > -10) {
+			#browser()
+			zsum<-zsum+z^2
+			#i<-i+1
+		} 
+		i<-i+1
+	} else if (i>80) {
+		#browser()
+		z<-h(i)
+
+		# Add z^3
+
+		zsum<-zsum+z^3
+		i<-i+1
+	} else {
+		z<-g(i)
+		#browser()
+		# If z>0, add sqrt(z)
+		# Otherwise, add sqrt(-z)
+
+		if(z>0) {
+			#browser()
+			zsum<-zsum+sqrt(z)
+			i<-i+1
+		} else {
+			#browser()
+			zsum<-zsum+sqrt(-z)
+			i<-i+1
+		}
+	}
+}
+
+print(zsum)
